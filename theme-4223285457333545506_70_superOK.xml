@@ -300,6 +300,15 @@ body.search-label .main-wrapper {
   margin:auto;
 }
 
+#pager-destino{
+  text-align:center;
+  padding:40px 0;
+}
+
+#pager-destino .pagination{
+  margin:auto;
+}
+
 
   ]]></b:skin>
 
@@ -2302,15 +2311,48 @@ body.modo-filtros #custom-search-results .post-item{
 
   
   
- <!-- ===== SECCION NAVEGACIÓN ===== -->
-<section id='pre-footer-section'>
+ <b:section class='pre-footer-section' id='pre-footer-section' maxwidgets='1' showaddelement='no'>
+   <b:widget id='HTML5' locked='false' title='' type='HTML'>
+     <b:widget-settings>
+       <b:widget-setting name='content'><![CDATA[<div id="pager-destino"></div>
 
-  <div class='pre-footer-inner'>
-    
-   </div>
+<script>
+(function(){
 
-</section>
-<!-- ===== FIN SECCION NAVEGACIÓN ===== --> 
+function moverPager(){
+
+  var pager = document.querySelector(
+    "#custom-search-results .pagination"
+  );
+
+  var destino = document.getElementById("pager-destino");
+
+  if(!pager || !destino) return;
+
+  if(!destino.contains(pager)){
+    destino.appendChild(pager);
+  }
+}
+
+/* revisar continuamente porque Blogger re-renderiza */
+setInterval(moverPager,300);
+
+})();
+</script>]]></b:widget-setting>
+     </b:widget-settings>
+     <b:includable id='main'>
+  <!-- only display title if it's non-empty -->
+  <b:if cond='data:title != &quot;&quot;'>
+    <h2 class='title'><data:title/></h2>
+  </b:if>
+  <div class='widget-content'>
+    <data:content/>
+  </div>
+
+  <b:include name='quickedit'/>
+</b:includable>
+   </b:widget>
+ </b:section> 
   
   
   
@@ -2782,11 +2824,14 @@ if (filtered.length > 0) {
         mainContent.innerHTML = html;
 
 
-/* ===== MOVER PAGINACION AL PRE-FOOTER ===== */
+
+
+/* ===== FIJAR PAGINACION EN PRE-FOOTER ===== */
+
 setTimeout(function(){
 
   var paginacion =
-    document.querySelector("#custom-search-results .blog-pager");
+    document.querySelector("#custom-search-results .pagination");
 
   var destino =
     document.getElementById("pre-footer-section");
@@ -2795,7 +2840,8 @@ setTimeout(function(){
       destino.appendChild(paginacion);
   }
 
-},100);
+},200);
+
 
 
 /* Scroll proveniente de filtros */
