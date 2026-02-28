@@ -273,6 +273,34 @@ body.search-label .main-wrapper {
 }
 
 
+/* ===== NAVEGACION ===== */
+
+#pre-footer-section{
+  padding:40px 0px;
+  text-align:center;
+  background:#fff;
+}
+
+.pre-footer-inner{
+  max-width:1100px;
+  margin:auto;
+}
+
+#pre-footer-section h2{
+  color:#703c17;
+  margin-bottom:10px;
+}
+
+#pre-footer-section p{
+  font-size:14px;
+  opacity:.8;
+}
+
+#pre-footer-section .blog-pager{
+  margin:auto;
+}
+
+
   ]]></b:skin>
 
   <style type='text/css'>
@@ -2272,6 +2300,20 @@ body.modo-filtros #custom-search-results .post-item{
 
   </div>
 
+  
+  
+ <!-- ===== SECCION NAVEGACIÓN ===== -->
+<section id='pre-footer-section'>
+
+  <div class='pre-footer-inner'>
+    
+   </div>
+
+</section>
+<!-- ===== FIN SECCION NAVEGACIÓN ===== --> 
+  
+  
+  
   <div id='footer-wrapper'>
     <div class='footer-cols'>
         
@@ -2738,6 +2780,23 @@ if (filtered.length > 0) {
         html += '</div>';
 
         mainContent.innerHTML = html;
+
+
+/* ===== MOVER PAGINACION AL PRE-FOOTER ===== */
+setTimeout(function(){
+
+  var paginacion =
+    document.querySelector("#custom-search-results .blog-pager");
+
+  var destino =
+    document.getElementById("pre-footer-section");
+
+  if (paginacion && destino){
+      destino.appendChild(paginacion);
+  }
+
+},100);
+
 
 /* Scroll proveniente de filtros */
 if (sessionStorage.getItem('scrollAFiltros') === '1') {
@@ -3208,7 +3267,7 @@ setTimeout(actualizarThumb, 200);
 });
 </script>
   
-  
+ 
 
 <script>
 // <![CDATA[
