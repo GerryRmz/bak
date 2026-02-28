@@ -2277,55 +2277,6 @@ body.modo-filtros #custom-search-results .post-item{
         
         <div class='footer-section'>
           <b:section class='footer-col' id='footer-1' preferred='yes' showaddelement='yes'>
-            <b:widget id='HTML4' locked='false' title='' type='HTML'>
-              <b:widget-settings>
-                <b:widget-setting name='content'><![CDATA[<script>
-document.addEventListener("DOMContentLoaded", function () {
-
-  if (!window.location.href.includes("/search/label/Destacados")) return;
-
-  var grid = document.querySelector(".post-grid");
-  if (!grid) return;
-
-  var cards = Array.prototype.slice.call(
-    grid.querySelectorAll(".post-card")
-  );
-
-  if (cards.length <= 6) return;
-
-  /* MEZCLA ALEATORIA */
-  for (var i = cards.length - 1; i > 0; i--) {
-    var j = Math.floor(Math.random() * (i + 1));
-    var temp = cards[i];
-    cards[i] = cards[j];
-    cards[j] = temp;
-  }
-
-  /* LIMPIAMOS EL GRID */
-  while (grid.firstChild) {
-    grid.removeChild(grid.firstChild);
-  }
-
-  /* INSERTAMOS SOLO 6 */
-  for (var k = 0; k < 6; k++) {
-    grid.appendChild(cards[k]);
-  }
-
-});
-</script>]]></b:widget-setting>
-              </b:widget-settings>
-              <b:includable id='main'>
-  <!-- only display title if it's non-empty -->
-  <b:if cond='data:title != &quot;&quot;'>
-    <h2 class='title'><data:title/></h2>
-  </b:if>
-  <div class='widget-content'>
-    <data:content/>
-  </div>
-
-  <b:include name='quickedit'/>
-</b:includable>
-            </b:widget>
             <b:widget id='HTML1' locked='false' title='Conócenos' type='HTML'>
               <b:widget-settings>
                 <b:widget-setting name='content'/>
@@ -2391,6 +2342,65 @@ document.addEventListener("DOMContentLoaded", function () {
       
       <div class='attribution-container main-wrapper'>
          <b:section id='attribution-section' preferred='yes' showaddelement='no'>
+           <b:widget id='HTML4' locked='false' title='' type='HTML'>
+             <b:widget-settings>
+               <b:widget-setting name='content'><![CDATA[<script>
+// <![CDATA[
+document.addEventListener("DOMContentLoaded", function () {
+  // Solo ejecutamos si estamos en la etiqueta "Destacados"
+  if (!window.location.href.includes("/search/label/Destacados")) return;
+
+  function aplicarAleatoriedad() {
+    // Buscamos el grid (usamos el selector que ya tienes en el CSS del XML)
+    var grid = document.querySelector(".post-grid");
+    if (!grid) return;
+
+    // Seleccionamos las tarjetas (post-card)
+    var cards = Array.from(grid.querySelectorAll(".post-card"));
+
+    // Si no hay suficientes tarjetas, no hacemos nada
+    if (cards.length <= 1) return;
+
+    // 1. MEZCLA ALEATORIA (Algoritmo Fisher-Yates)
+    for (var i = cards.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var temp = cards[i];
+      cards[i] = cards[j];
+      cards[j] = temp;
+    }
+
+    // 2. LIMPIAMOS EL GRID
+    grid.innerHTML = "";
+
+    // 3. INSERTAMOS SOLO LAS PRIMERAS 6
+    var limite = Math.min(cards.length, 6);
+    for (var k = 0; k < limite; k++) {
+      grid.appendChild(cards[k]);
+    }
+    
+    // Mostramos el grid por si estaba oculto
+    grid.style.visibility = "visible";
+    grid.style.opacity = "1";
+  }
+
+  // Ejecutamos con un pequeño retraso para asegurar que Blogger cargó los posts
+  setTimeout(aplicarAleatoriedad, 500);
+});
+// ]]]]><![CDATA[>
+</script>]]></b:widget-setting>
+             </b:widget-settings>
+             <b:includable id='main'>
+  <!-- only display title if it's non-empty -->
+  <b:if cond='data:title != &quot;&quot;'>
+    <h2 class='title'><data:title/></h2>
+  </b:if>
+  <div class='widget-content'>
+    <data:content/>
+  </div>
+
+  <b:include name='quickedit'/>
+</b:includable>
+           </b:widget>
            <b:widget id='Attribution1' locked='true' title='' type='Attribution'>
              <b:widget-settings>
                <b:widget-setting name='copyright'/>
@@ -3226,10 +3236,6 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 // ]]>
 </script>
-  
-  
-
-  
-  
+ 
 </body>
 </html>
