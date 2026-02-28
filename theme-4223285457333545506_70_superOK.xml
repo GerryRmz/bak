@@ -1168,7 +1168,43 @@ button:focus {
   border-color: #703c17;
   box-shadow: 0 4px 12px rgba(112,60,23,0.2);
 }
+    
 
+/* ===== MODO FILTROS ===== */
+
+/* ocultar TODOS los títulos cuando hay resultados */
+body.modo-filtros #custom-search-results h2{
+  display:none !important;
+}
+
+
+/* ===== SOLO cuando NO hay resultados ===== */
+
+/* mostrar únicamente el bloque Ups */
+body.modo-filtros.sin-resultados-filtro
+#custom-search-results div[style*=&quot;max-width:420px&quot;]{
+  display:block !important;
+}
+
+/* mostrar su h2 interno */
+body.modo-filtros.sin-resultados-filtro
+#custom-search-results div[style*=&quot;max-width:420px&quot;] h2{
+  display:block !important;
+}
+    
+/* elimina espacio dejado por el titulo oculto */
+body.modo-filtros #custom-search-results .post-item h2{
+  margin:0 !important;
+  padding:0 !important;
+  height:0 !important;
+}
+
+/* compacta la tarjeta */
+body.modo-filtros #custom-search-results .post-item{
+  padding-bottom:0 !important;
+}
+    
+    
     
   </style>
 </head>
@@ -2610,6 +2646,17 @@ function renderPaginacion(totalResultados) {
         const start = (currentPage - 1) * RESULTS_PER_PAGE;
         const end = start + RESULTS_PER_PAGE;
         const paginatedResults = filtered.slice(start, end);
+        const sinResultados = filtered.length === 0;
+
+if (sessionStorage.getItem('scrollAFiltros') === '1') {
+    document.body.classList.add('modo-filtros');
+
+    if (sinResultados) {
+        document.body.classList.add('sin-resultados-filtro');
+    } else {
+        document.body.classList.remove('sin-resultados-filtro');
+    }
+}
         
         let html = '<div id="custom-search-results" class="main-inner" style="margin-top: 0px; padding-top: 0;">';
         
@@ -2653,7 +2700,9 @@ if (filtered.length > 0) {
             </svg>
         </div>
 
-        <!-- TEXTO -->
+        
+
+<!-- TEXTO -->
         <div style="max-width:420px;">
             <h2 style="color:#703c17; margin:0 0 10px 0; text-align:left; font-family: inherit;">
                 ¡Ups!, lo sentimos...
@@ -2683,6 +2732,8 @@ if (filtered.length > 0) {
 /* Scroll proveniente de filtros */
 if (sessionStorage.getItem('scrollAFiltros') === '1') {
 
+    document.body.classList.add('modo-filtros');
+
     const filtros = document.getElementById('seccion-filtros');
 
     if (filtros) {
@@ -2691,6 +2742,8 @@ if (sessionStorage.getItem('scrollAFiltros') === '1') {
             block: 'start'
         });
     }
+
+    
 
     sessionStorage.removeItem('scrollAFiltros');
 }
@@ -3175,15 +3228,7 @@ document.addEventListener("DOMContentLoaded", function() {
 </script>
   
   
-<script>
-document.addEventListener(&quot;DOMContentLoaded&quot;, function () {
 
-  if (sessionStorage.getItem(&#39;scrollAFiltros&#39;) === &#39;1&#39;) {
-    document.body.classList.add(&#39;modo-filtros&#39;);
-  }
-
-});
-</script>
   
   
 </body>
