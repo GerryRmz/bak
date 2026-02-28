@@ -1293,26 +1293,26 @@ button:focus {
   </div>
 
   
-<div class='filtro-postres'>
+<div class='filtro-postres' id='seccion-filtros'>
   <h3>Elige tu postre según el número de personas</h3>
 
   <div class='fp-item'>
-    <a class='fp-btn cat-individual' href='/search/label/cat-individual'>6 personas</a>
+    <a class='fp-btn cat-individual' href='/search/label/6%20personas' onclick='sessionStorage.setItem(&quot;scrollAFiltros&quot;,&quot;1&quot;)'>6 personas</a>
     <div>Ideal para regalo o antojo</div>
   </div>
 
   <div class='fp-item'>
-    <a class='fp-btn cat-pequeño' href='/search/label/cat-pequeno'>8&#8211;12 personas</a>
+    <a class='fp-btn cat-pequeño' href='/search/label/8%20a%2012%20personas' onclick='sessionStorage.setItem(&quot;scrollAFiltros&quot;,&quot;1&quot;)'>8 a 12 personas</a>
     <div>Perfecto para reuniones</div>
   </div>
 
   <div class='fp-item'>
-    <a class='fp-btn cat-grande' href='/search/label/cat-grande'>15&#8211;25 personas</a>
+    <a class='fp-btn cat-grande' href='/search/label/15%20a%2025%20personas' onclick='sessionStorage.setItem(&quot;scrollAFiltros&quot;,&quot;1&quot;)'>15 a 25 personas</a>
     <div>Eventos y celebraciones</div>
   </div>
 
   <div class='fp-item'>
-    <a class='fp-btn cat-personalizados' href='/search/label/cat-personalizados'>+25 personas</a>
+    <a class='fp-btn cat-personalizados' href='/search/label/M%C3%A1s%20de%2025%20personas' onclick='sessionStorage.setItem(&quot;scrollAFiltros&quot;,&quot;1&quot;)'>Más de 25 personas</a>
     <div>Diseños únicos bajo pedido</div>
   </div>
 </div>
@@ -2680,11 +2680,35 @@ if (filtered.length > 0) {
 
         mainContent.innerHTML = html;
 
-if (sessionStorage.getItem('scrollToSearchResults') === '1') {
-    const resultsContainer = document.getElementById('custom-search-results');
-    if (resultsContainer) {
-        resultsContainer.scrollIntoView({ behavior: 'smooth' });
+/* Scroll proveniente de filtros */
+if (sessionStorage.getItem('scrollAFiltros') === '1') {
+
+    const filtros = document.getElementById('seccion-filtros');
+
+    if (filtros) {
+        filtros.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        });
     }
+
+    sessionStorage.removeItem('scrollAFiltros');
+}
+
+
+/* Scroll proveniente de menú / buscador */
+else if (sessionStorage.getItem('scrollToSearchResults') === '1') {
+
+    const resultsContainer =
+        document.getElementById('custom-search-results');
+
+    if (resultsContainer) {
+        resultsContainer.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        });
+    }
+
     sessionStorage.removeItem('scrollToSearchResults');
 }
 
@@ -3126,24 +3150,39 @@ setTimeout(actualizarThumb, 200);
 <script>
 // <![CDATA[
 document.addEventListener("DOMContentLoaded", function() {
-  // Obtenemos la URL actual
-  var currentUrl = window.location.href;
+  // 1. Obtenemos y limpiamos la URL actual (decodificada)
+  var currentUrl = decodeURIComponent(window.location.href);
 
-  // Buscamos todos los botones del filtro
+  // 2. Buscamos todos los botones
   var botones = document.querySelectorAll('.fp-btn');
 
   botones.forEach(function(boton) {
-    // Obtenemos el enlace del botón
+    // 3. Obtenemos el href tal cual está escrito
     var link = boton.getAttribute('href');
+    
+    if (link) {
+      // 4. Decodificamos el enlace para que coincida con la URL limpia
+      var decodedLink = decodeURIComponent(link);
 
-    // Si la URL actual contiene el enlace del botón, le ponemos la clase active
-    // Usamos decodeURIComponent por si hay tildes o caracteres especiales
-    if (currentUrl.includes(decodeURIComponent(link))) {
-      boton.classList.add('active');
+      // 5. Verificamos si la URL termina con ese enlace o lo contiene
+      if (currentUrl.indexOf(decodedLink) !== -1) {
+        boton.classList.add('active');
+      }
     }
   });
 });
 // ]]>
+</script>
+  
+  
+<script>
+document.addEventListener(&quot;DOMContentLoaded&quot;, function () {
+
+  if (sessionStorage.getItem(&#39;scrollAFiltros&#39;) === &#39;1&#39;) {
+    document.body.classList.add(&#39;modo-filtros&#39;);
+  }
+
+});
 </script>
   
   
