@@ -1094,6 +1094,8 @@ button:focus {
     max-width: 100%;
   }
 }
+
+/* TITULO DESTACADOS */    
     
 .lightbox-post-title {
   text-align: left;
@@ -1102,6 +1104,71 @@ button:focus {
   font-size: 20px;
   margin-bottom: 12px;
 }    
+    
+/* FILTRO POSTRES */
+    
+.filtro-postres{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:12px;
+  padding:20px 10px;
+  text-align:center;
+}
+
+/* TITULO ARRIBA SIEMPRE */
+.filtro-postres h3{
+  width:100%;
+  text-align:center;
+  color:#703c17;
+  margin-bottom:16px;
+  font-size: 16px;
+}
+
+/* bloque individual */
+.fp-item{
+  width:140px;
+  text-align:center;
+}
+
+/* BOTÓN estilo HOME */
+.fp-btn{
+  display:block;
+  width:100%;
+  padding:8px 0;
+  border-radius:40px;
+  text-decoration:none;
+  font-size:13px;
+  font-weight:600;
+  color:#703c17;
+  background:#fff;
+  border:1px solid #e0e0e0;
+  
+  transition:all .3s ease;
+}
+
+/* HOVER igual al HOME */
+.fp-btn:hover{
+  border-color:#703c17;
+  box-shadow:0 2px 8px rgba(112,60,23,.15);
+}
+
+/* texto inferior */
+.fp-item div{
+  font-size:11px;
+  margin-top:4px;
+  opacity:.7;
+}
+    
+
+/* Estilo para el botón resaltado */
+.fp-btn.active {
+  background-color: #703c17 !important; /* El color café de tu marca */
+  color: #ffffff !important;           /* Texto blanco */
+  border-color: #703c17;
+  box-shadow: 0 4px 12px rgba(112,60,23,0.2);
+}
+
     
   </style>
 </head>
@@ -1225,6 +1292,32 @@ button:focus {
     </div>
   </div>
 
+  
+<div class='filtro-postres'>
+  <h3>Elige tu postre según el número de personas</h3>
+
+  <div class='fp-item'>
+    <a class='fp-btn cat-individual' href='/search/label/cat-individual'>6 personas</a>
+    <div>Ideal para regalo o antojo</div>
+  </div>
+
+  <div class='fp-item'>
+    <a class='fp-btn cat-pequeño' href='/search/label/cat-pequeno'>8&#8211;12 personas</a>
+    <div>Perfecto para reuniones</div>
+  </div>
+
+  <div class='fp-item'>
+    <a class='fp-btn cat-grande' href='/search/label/cat-grande'>15&#8211;25 personas</a>
+    <div>Eventos y celebraciones</div>
+  </div>
+
+  <div class='fp-item'>
+    <a class='fp-btn cat-personalizados' href='/search/label/cat-personalizados'>+25 personas</a>
+    <div>Diseños únicos bajo pedido</div>
+  </div>
+</div>
+  
+  
   <div class='main-wrapper content-wrapper'>
     
     <div class='main-area'>
@@ -3026,6 +3119,31 @@ thumb.addEventListener(&quot;pointerup&quot;, (e) =&gt; {
 setTimeout(actualizarThumb, 200);
 
 });
+</script>
+  
+  
+
+<script>
+// <![CDATA[
+document.addEventListener("DOMContentLoaded", function() {
+  // Obtenemos la URL actual
+  var currentUrl = window.location.href;
+
+  // Buscamos todos los botones del filtro
+  var botones = document.querySelectorAll('.fp-btn');
+
+  botones.forEach(function(boton) {
+    // Obtenemos el enlace del botón
+    var link = boton.getAttribute('href');
+
+    // Si la URL actual contiene el enlace del botón, le ponemos la clase active
+    // Usamos decodeURIComponent por si hay tildes o caracteres especiales
+    if (currentUrl.includes(decodeURIComponent(link))) {
+      boton.classList.add('active');
+    }
+  });
+});
+// ]]>
 </script>
   
   
